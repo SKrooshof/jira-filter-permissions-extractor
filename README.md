@@ -6,9 +6,9 @@ This Python script extracts filter permissions and roles from Jira instances, su
 
 * Python 3.6 or higher
 * The following Python modules:
-* requests
-* pandas
-* tqdm
+	* requests
+	* pandas
+	* tqdm
 
 ### Installation ###
 
@@ -24,7 +24,7 @@ source venv/bin/activate
 ```
 3. Install the required modules:
 ```
-pip install requests pandas tqdm
+pip install -r requirements.txt
 ```
 
 ### Running the Script ###

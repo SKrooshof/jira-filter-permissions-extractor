@@ -5,6 +5,7 @@ from base64 import b64encode
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 import getpass
+import re
 
 def get_jira_filters(userName, token, baseUrl, api_version):
     """
@@ -127,13 +128,22 @@ def main():
     instance_type = input("Enter instance type (cloud/server): ").strip().lower()
     baseUrl = input("Enter Jira instance URL: ").strip()
     userName = input("Enter username: ").strip()
+    
+    subdomain_match = re.match(r'https:\/\/([a-zA-Z0-9\-]+)\.', baseUrl)
+    if subdomain_match:
+        subdomain = subdomain_match.group(1)
+    else:
+        logging.error("Invalid Jira URL format. Could not extract subdomain.")
+        return
+
     if instance_type == "cloud":
         token = getpass.getpass("Enter API key: ").strip()
         api_version = "3"
     else:
         token = getpass.getpass("Enter password: ").strip()
         api_version = "2"
-    filename = "jira_filters.csv"
+
+    filename = f"filter_permissions_{subdomain}.csv"
 
     logging.info("Starting the Jira filter fetching process.")
     logging.info(f"Using instance type: {instance_type}")
